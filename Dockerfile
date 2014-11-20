@@ -36,4 +36,9 @@ ADD extensions.conf /etc/asterisk/
 ADD sip.conf /etc/asterisk/
 ADD http.conf /etc/asterisk/
 
+# setup DTLS certificates
+RUN mkdir -p /etc/asterisk/keys
+ADD ast_tls_cert /tmp/asterisk/contrib/scripts/
+RUN /tmp/asterisk/contrib/scripts/ast_tls_cert -C pbx.mycompany.com -O "My Super Company" -d /etc/asterisk/keys
+
 CMD asterisk -f
