@@ -7,6 +7,16 @@ RUN yum install kernel-headers gcc gcc-c++ cpp ncurses ncurses-devel libxml2 lib
 
 ENV AUTOBUILD_UNIXTIME 1413824400
 
+# download libsrtp
+RUN curl -sf -o /tmp/srtp.tgz http://srtp.sourceforge.net/srtp-1.4.2.tgz
+RUN mkdir /tmp/srtp
+RUN tar -xzf /tmp/srtp.tgz -C /tmp/srtp --strip-components=1
+
+# build srtp
+WORKDIR /tmp/srtp
+RUN ./configure CFLAGS=-fPIC
+RUN make && make install
+
 # Download asterisk.
 # Currently Certified Asterisk 11.6 cert 6.
 RUN curl -sf -o /tmp/asterisk.tar.gz -L http://downloads.asterisk.org/pub/telephony/certified-asterisk/certified-asterisk-11.6-current.tar.gz
